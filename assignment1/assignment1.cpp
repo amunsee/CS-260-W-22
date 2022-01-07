@@ -1,3 +1,5 @@
+/*For the sake of simplicity in this assignment i kept the adding/removing of marbles to one at a time, in a more complicated assignment implementing an option to allow the user to input how many marbles to remove/add could be implemented with some checks to make sure the user is not trying to remove more marbles than are currently in the bag, and even allowing the user to choose what color and how many of the color to add or remove. - may implement these later just to practice some c++ code
+*/
 #include <iostream>
 #include <time.h>
 #include <vector>
