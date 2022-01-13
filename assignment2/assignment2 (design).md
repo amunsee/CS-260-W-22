@@ -1,4 +1,5 @@
 Assignment 2 Design:
+
 2.
 	1. Functions we are likely to need for a queue: 
 		-get size function
