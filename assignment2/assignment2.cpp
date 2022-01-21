@@ -5,20 +5,20 @@ using std::cin;
 using std::endl;
 
 
-class Node{
+class linked_list{
     int value; //able to keep this private so long as i have a method to get the value via get_value
-    //Node *first = this;
-    Node *last = this;
+    //linked_list *first = this;
+    linked_list *last = this;
     
 
     public:
-    Node *next;    //wanted to make this part private as well but couldnt get it to work
+    linked_list *next;    //wanted to make this part private as well but couldnt get it to work
     int list_length = 0;
 
-    Node(int new_value){ //initalizer function???
+    linked_list(int new_value){
         value = new_value;
-        this->next = NULL;
-        list_length = 1; //by default set next to NULL when a new node is created, can change value if node is not being added to end of the list.
+        this->next = NULL; //by default set next to NULL when a new linked_list is created, value updated when new linked_list is added after
+        list_length = 1; 
     }
 
     int get_value(){
@@ -29,48 +29,44 @@ class Node{
         this->value = input;
     }
 
-    void set_next(Node *next_node){
-        this->next = next_node;
+    void set_next(linked_list *next_linked_list){
+        this->next = next_linked_list;
     }
 
-    //this add node function is for strictly adding to the back of the list not for inserting anywhere in the list (enqueueing function)
-    void add_node(int value){ //this works for creating a new node just neeed to get it linked to original list. :) making progress
-        Node *temp = new Node(value);
+    //this add linked_list function is for strictly adding to the back of the list not for inserting anywhere in the list (enqueueing function)
+    void add_node(){ //this works for creating a new linked_list just neeed to get it linked to original list. :) making progress
+        int node_value;
+        cout << "what value would you like to add to your list?: " << endl;
+        cin >> node_value;
+
+        linked_list *temp = new linked_list(node_value);
         last->next = temp;
-        //need to figure out how to keep track of where i am in this list now and then how to keep track of the start and ending....
-        //cout << temp->value << endl;
+
         this->last = temp;
 
         this->list_length += 1;
     }
 
-    void delete_node(){ //this function just deletes the first node -dequeueing function (currently no checking to see if this is last node in list yet...add later)
-        //Node *temp = new Node(0);
+    void delete_node(){ //this function just deletes the first linked_list -dequeueing function (currently no checking to see if this is last linked_list in list yet...add later)
+       
         if(this->list_length == 0)
         {
             cout << "your list is already empty, nothing left to delete" << endl;
             return;
         }
 
-        cout << this->value << "debugging info " << endl;
-        cout << this->next << "debugging info" <<  endl;
-        Node *temp = this; //this delete is successfully deleteing the first node in the linked list !!! \O/
-        Node *prev = NULL;
+        linked_list *temp = this; //this delete is successfully deleteing the first linked_list in the linked list !!! \O/
+        linked_list *prev = NULL;
 
-        cout << "hi" << endl;
 
-        if(this->list_length == 1){ //if last node happens to also be the only node in list
+        if(this->list_length == 1){ //if last linked_list happens to also be the only linked_list in list
             this->value = NULL;
 
         }
 
-        else{ //if not deleting the only node in the list
+        else{ //if not deleting the only linked_list in the list
             this->value = temp->next->value;
-            this->next = temp->next->next;
-            cout << "bye" << endl;
-            cout << this->value << endl;
-            cout << this->next << endl;
-            cout << "still here" << endl;
+            this->next = temp->next->next;     
         }
         
         this->list_length -= 1;
@@ -81,7 +77,7 @@ class Node{
         return this->list_length;
     }
 
-    void insert_at(){ //assumption is that if user wants to add to the end of the list they will add a new node, so this can only add infront of exitsting nodes in list
+    void insert_at(){ //assumption is that if user wants to add to the end of the list they will add a new linked_list, so this can only add infront of exitsting linked_lists in list
         int location = 0;
         int new_value;
 
@@ -99,8 +95,8 @@ class Node{
 
         if(location == 1){ //this part working great at inserting at the beginning of the list! yay
             
-           Node *inserting = new Node(this->value); //creating new node that will take first nodes value; this node will go in second spot and take first nodes values while first
-            //node changes values -- wasnt able to get a node to insert at first spot...
+           linked_list *inserting = new linked_list(this->value); //creating new linked_list that will take first linked_lists value; this linked_list will go in second spot and take first linked_lists values while first
+            //linked_list changes values -- wasnt able to get a linked_list to insert at first spot...
           
 
             int original_value = this->value;
@@ -108,29 +104,28 @@ class Node{
             inserting->next = this->next;
             this->next =inserting;
             this -> value = new_value;
-
+            
         }
 
         else{//now working -- had to make sure i was updating temp and not pointing to this over and over 
-            Node *temp = this;
+            linked_list *temp = this;
 
             for(int i = 2; i < location; i++){
 
-
-                cout << "i " << i << endl;
-                cout << temp->value << endl;
                 temp = temp->next;           
 
             }
             
-            Node *current = temp; //node we are inserting after
-            Node *next = temp->next; //node we want to insert before
+            linked_list *current = temp; //linked_list we are inserting after
+            linked_list *next = temp->next; //linked_list we want to insert before
 
-            Node *inserting = new Node(new_value); //new node to insert into list
+            linked_list *inserting = new linked_list(new_value); //new linked_list to insert into list
             current->next = inserting;
             inserting->next = next;
 
         }
+
+        this->list_length += 1;
 
     }
 
@@ -146,23 +141,26 @@ class Node{
             }
         }
 
-        if(location == 1){ //if they want to delete the first node just jump to this method
+        if(location == 1){ //if they want to delete the first linked_list just jump to this method
             this->delete_node();
         }
 
         else{
-            Node *temp = this;
+            linked_list *temp = this;
 
-            for(int i = 2; i < location; i++){ //starting at location 2 since location 1 is already handled via delete node function.
+            for(int i = 2; i < location; i++){ //starting at location 2 since location 1 is already handled via delete linked_list function.
 
-
-                cout << "i " << i << endl;
-                cout << temp->value << endl;
                 temp = temp->next;           
 
             }
             
             temp->next = temp->next->next;
+            
+            if(location == this->list_length){ //update this->last to point at the new last item when the last item is removed from linked list.
+                this->last = temp;
+            }
+
+            this->list_length -= 1;
 
         }
 
@@ -177,7 +175,10 @@ class Node{
             return;
         }
 
-        Node *temp = this;
+        cout << endl;
+        cout << "your list contents: " << endl;
+
+        linked_list *temp = this;
         while(temp != NULL)
         {
             
@@ -202,8 +203,8 @@ class Node{
             cin >> input;
         }
 
-        Node *temp = this;
-        for(int i = 1; i < input; i++){ //i starts at 1 not 0 due to the node already pointing at place 1 in the list and the user not starting their location at 0
+        linked_list *temp = this;
+        for(int i = 1; i < input; i++){ //i starts at 1 not 0 due to the linked_list already pointing at place 1 in the list and the user not starting their location at 0
             temp = temp->next;
         }
 
@@ -212,97 +213,77 @@ class Node{
     }
 };
 
+void instructions(){
 
-//ok this is working so far!!! - not using anymore but left here for now
-  void print_list(Node *n){
-    
-        while (n != NULL){
-            cout << n->get_value() << endl;
-            n = n->next;
-        }
-    }
-
+    cout << endl;
+    cout << "enter 1 to add an item to the end of your list (enqueue)" << endl;
+    cout << "enter 2 to remove the first list item (dequeue)" << endl;
+    cout << "enter 3 to insert an item in a specifc place in the list" << endl;
+    cout << "enter 4 to remove an item from a specific location in the list" << endl;
+    cout << "enter 5 to see the size of the list" << endl;
+    cout << "enter 6 to print the contents of the entire list" << endl;
+    cout << "enter 7 to see the content of a specific list item" << endl;
+    cout << "enter anything else to quit the program" << endl;
+}
 
 
 int main(){
 
-    Node *h = new Node(10);
-    Node *j = new Node(15);
-    Node *k = new Node(16);
+    int initial_value;
+
+    cout << "enter the initial value youd like to create you list with: " << endl;
+    cin >> initial_value;
 
 
-    h->set_next(j);
-    j->set_next(k);
-    k->set_next(NULL);
+    linked_list *int_list = new linked_list(initial_value);
 
-    cout << h->get_value() << endl;
-    //h->value = 67; value is private so this wont work, if it was public it would
-    cout << h->get_value() << endl;
+    bool exit = false;
 
-    cout << h->next << endl;
-    cout << j->next << endl;
-    cout << k->next << endl;
+    int choice = 0;
 
-    cout << j << endl;
-
-    Node *previous = k;
-
-    for(int i = 0; i < 5; i++){
-        Node *p = new Node(i);
-        previous->next = p;
-        previous = p;
-    }
-
-    print_list(h);
-
-    cout << "testing my node adding and linking" << endl << endl;
-    Node *z = new Node(9);
-
-    for(int i = 0; i < 5; i++){
-        z->add_node(i);
-    }
-    
-    print_list(z);
-
-    cout << "length: " << z->get_list_size() << endl;
-    cout << "deleting the first value/node (9)" << endl;
-    z->delete_node();
-
-    cout << "reprinting now ive deleted first list item (9)" << endl;
-    cout << "new length " << z->get_list_size() << endl;
-    print_list(z);
-
-/*
-    cout << "testing built in print function" << endl;
-    z->print_list();
-    z->insert_at();
-    cout << "printing new list now" << endl << endl;
-    z->print_list();
-*/
-    cout << "now to delete at spots" << endl;
-    z->delete_at();
-    
-    cout << "printing list again time to see if i deleted my index" << endl;
-    z->print_list();
-
-/*
-    z->check_value();
-
-    cout << "w list" << endl;
-    Node *w = new Node(5);
-    cout << "printing w" << endl;
-    w->print_list();
+    while(exit == false){
 
 
-    cout << " list was printed " << endl;
-    w->delete_node();
-    cout << "printing w after deleting node" << endl;
-    w->print_list();
-    cout << "end of stuff here" << endl;
-    w->get_list_size();
-    cout << "am i shown? " << endl;
-    w->delete_node();
-    cout << w->get_list_size() << endl;
-*/
-    return 0;
+        instructions();
+        
+        cin >> choice;
+
+        if (choice == 1){
+            int_list->add_node();
+        }
+
+        else if (choice == 2){
+            int_list->delete_node();
+        }
+
+        else if (choice == 3){
+            int_list->insert_at();
+        }
+
+        else if (choice == 4){
+            int_list->delete_at();
+        }
+
+        else if (choice == 5){
+        
+            cout << int_list->get_list_size() << endl;
+        }
+
+        else if (choice == 6){
+            int_list->print_list();
+
+        }
+
+        else if (choice == 7){
+            int_list->check_value();
+
+        }  
+        
+        else{
+            return 0;
+        }
+
+    }    
+
+    return 0; //unnecessary to have this return but left anyways
 }
