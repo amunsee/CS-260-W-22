@@ -1,3 +1,5 @@
+/*test coming soon -- now that program is working will work on adding some way to show that other than manual input via user.*/
+
 #include <iostream>
 
 using std::cout;
