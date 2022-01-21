@@ -64,7 +64,7 @@ class Node{
 
         }
 
-        else{ //if not deleting the last node in the list
+        else{ //if not deleting the only node in the list
             this->value = temp->next->value;
             this->next = temp->next->next;
             cout << "bye" << endl;
@@ -81,24 +81,90 @@ class Node{
         return this->list_length;
     }
 
-    void insert_at(){
-        //iterate through node number of times specificed to place in list unless list length < index input then yell at user
-        //when 1 less than index place in temp space
-        //create new node
-        //have old one point at this node now
-        //have new node point to next node
-        //if first or last minor tweaks...
-        //increment size counter
+    void insert_at(){ //assumption is that if user wants to add to the end of the list they will add a new node, so this can only add infront of exitsting nodes in list
+        int location = 0;
+        int new_value;
+
+        while (location < 1 || location >this->list_length){
+            cout << "where would you like to insert the value in your list: 1-" << this->list_length <<endl;
+            cin >> location;
+
+            if(location < 1 || location > this->list_length){
+                cout << "invalid location please pick something between 1 and " << this->list_length << endl;
+            }
+        }
+
+        cout << "What value would you like to insert at that location?: " << endl;
+        cin >> new_value;
+
+        if(location == 1){ //this part working great at inserting at the beginning of the list! yay
+            
+           Node *inserting = new Node(this->value); //creating new node that will take first nodes value; this node will go in second spot and take first nodes values while first
+            //node changes values -- wasnt able to get a node to insert at first spot...
+          
+
+            int original_value = this->value;
+
+            inserting->next = this->next;
+            this->next =inserting;
+            this -> value = new_value;
+
+        }
+
+        else{//now working -- had to make sure i was updating temp and not pointing to this over and over 
+            Node *temp = this;
+
+            for(int i = 2; i < location; i++){
+
+
+                cout << "i " << i << endl;
+                cout << temp->value << endl;
+                temp = temp->next;           
+
+            }
+            
+            Node *current = temp; //node we are inserting after
+            Node *next = temp->next; //node we want to insert before
+
+            Node *inserting = new Node(new_value); //new node to insert into list
+            current->next = inserting;
+            inserting->next = next;
+
+        }
 
     }
 
     void delete_at(){
-        //iterate through loop to index selected unless greater than size of list
-        //get the before node
-        //grab the next from current node
-        //change previous to point to next
-        //decrement size counter
-        //if first or last minor tweaks...
+        int location = 0;
+
+        while (location < 1 || location >this->list_length){
+            cout << "where would you like to delete the value in your list: 1-" << this->list_length <<endl;
+            cin >> location;
+
+            if(location < 1 || location > this->list_length){
+                cout << "invalid location please pick something between 1 and " << this->list_length << endl;
+            }
+        }
+
+        if(location == 1){ //if they want to delete the first node just jump to this method
+            this->delete_node();
+        }
+
+        else{
+            Node *temp = this;
+
+            for(int i = 2; i < location; i++){ //starting at location 2 since location 1 is already handled via delete node function.
+
+
+                cout << "i " << i << endl;
+                cout << temp->value << endl;
+                temp = temp->next;           
+
+            }
+            
+            temp->next = temp->next->next;
+
+        }
 
     }
 
@@ -111,12 +177,12 @@ class Node{
             return;
         }
 
-        Node *n = this;
-        while(n != NULL)
+        Node *temp = this;
+        while(temp != NULL)
         {
             
-            cout << n->value << endl;;
-            n = n->next;
+            cout << temp->value << endl;;
+            temp = temp->next;
         }
     }
 
@@ -142,30 +208,11 @@ class Node{
         }
 
         cout << "the value at location " << input << " is " << temp->value << endl;
-
-        
-        //get index check if valid index
-        //find that index get value 
-        //spit out value of index yay :D
-        
+      
     }
 };
 
 
-/*
-    void set_next(Node thing){
-        this->next = &thing;
-    }
-
-    //void get_next(){
-     //   cout << this->next << endl;
-        //cout << this->*next << endl;
-    //}
-
-  
-
-};
-*/
 //ok this is working so far!!! - not using anymore but left here for now
   void print_list(Node *n){
     
@@ -178,8 +225,6 @@ class Node{
 
 
 int main(){
-    //Node h(10);
-    //Node j(15);
 
     Node *h = new Node(10);
     Node *j = new Node(15);
@@ -227,10 +272,20 @@ int main(){
     cout << "new length " << z->get_list_size() << endl;
     print_list(z);
 
-
+/*
     cout << "testing built in print function" << endl;
     z->print_list();
+    z->insert_at();
+    cout << "printing new list now" << endl << endl;
+    z->print_list();
+*/
+    cout << "now to delete at spots" << endl;
+    z->delete_at();
+    
+    cout << "printing list again time to see if i deleted my index" << endl;
+    z->print_list();
 
+/*
     z->check_value();
 
     cout << "w list" << endl;
@@ -248,14 +303,6 @@ int main(){
     cout << "am i shown? " << endl;
     w->delete_node();
     cout << w->get_list_size() << endl;
-    
-   /* cout << h.get_value() << endl;
-    h.set_next(j);
-    //cout << h.get_next() << endl;
-    //h.get_next();
-    cout << &j << endl;
-    cout << j.get_value() << endl;
-    j.set_next(NULL);
 */
     return 0;
 }
