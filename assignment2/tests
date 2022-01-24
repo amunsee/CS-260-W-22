@@ -1,0 +1,68 @@
+/*Due to the complexity of the code using inputs its been more challenging to write an automated test for assignment 2*/
+
+/*One option would be to rewrite the code not to take inputs making automated testing easier, not sure how to do automated testing while giving the test pre defined inputs for input spots*/
+
+/*
+
+test that can be done manually to show functions and class are working properly
+
+user inputs 5 for initial list item 
+
+user inputs 1 for selection - user inputs 10 for item value
+user inputs 1 for selection - user inputs 13 for value
+user inputs 1 for selection - user inputs 22 for value (list now contains 4 items of values 5,10,13 and 22)
+
+user prints list - should display 5,10,13,22
+
+user inputs 2 - 5 is now removed (10,13,22 in list)
+
+user prints list - 10,13,22 displayed
+
+user selects 3 - inputs 5 invalid input - inputs 2 for location - input 99 (list now contains 5,99,10,13)
+
+user selects 6 to print list (5,99,10,13 displayed)
+
+user inputs 4 - selects location 2 
+user selects 6 - prints 5,10,13
+
+user selects 5 - 3 displayed for size of list
+
+user selects 7 - inputs 3 for location - 13 is displayed.
+
+*/
+
+/*
+Attempt at turning above manual test into an automated test that wont run with current code: 
+
+
+input = 5;
+linked_list *int_list = new linked_list(input);
+
+input = 10;
+int_list->add_node(input);
+
+input=13;
+int_list->add_node(input);
+
+input = 22;
+int_list->add_node(input);
+
+int_list->print_list();
+
+input = 2;
+int_list->delete_node();
+
+int_list->print_list();
+
+int_list->insert_at(2, 99);
+
+int_list->print_list();
+
+int_list->delete_at(2);
+
+int_list->print_list();
+
+int_list->get_list_size();
+
+int_list->check_value(3);
+*/
