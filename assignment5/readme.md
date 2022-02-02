@@ -4,3 +4,5 @@ For an array based list - to sort i could iterate through the list from one end 
 
 For a linked list - iterating through the list starting at the head and checking if the value is smaller, once a larger value is found the inserted value would point to that and the previous node would be changed to point at the new node. - unsure of how a binary sort could be implemented into the linked list but will look into some methods.
 
+
+![assignment5design](https://user-images.githubusercontent.com/97048406/152081361-0fbad00c-dbcd-45be-95a0-976fd7bf206a.jpg)
