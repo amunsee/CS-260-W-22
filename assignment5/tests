@@ -1,1 +1,9 @@
+tests for the array list
+- insert 1, 3, 5, 2, 4 should sort and insert the values as 1,2,3,4,5
+-search list for 9 - should return not in list
+-search list for 3 - should return that it is in list
 
+tests for linked list
+- insert 1, 3, 5, 2, 4 should sort and insert the values as 1,2,3,4,5
+-search list for 9 - should return not in list
+-search list for 3 - should return that it is in list
