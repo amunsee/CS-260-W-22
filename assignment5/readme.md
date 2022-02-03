@@ -8,7 +8,8 @@ searching for an element in an array will be done using binary search or iterati
 
 
 Attempt at big O analysis - Sort  ------------------------ Search
-Using fast search method    O(n)                           O(n/2)
+
+Using fast search method  - O(n) ------------------------- O(n/2) - Not entirely sure on these but this is my guess on them
 
 Basic search method would be O(n) 
 
