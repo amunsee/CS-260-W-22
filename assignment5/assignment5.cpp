@@ -161,60 +161,44 @@ class linked_list{
 //could have more pointers that point to sections if the data set was large enough, a pointer to inbetween mid and head, 
 //and one between mid and tail or more as needed to create a pseudo binary search
     bool faster_search(int to_find){
+        bool result = false;
+        Node *temp;
+
         if(mid->value < to_find){ //if searched for value is greater than mid value
             if(tail->value == to_find){
-                cout << to_find << " is in list" << endl;
-                return true;
-
+                result = true;
             }
 
             else if(tail->value < to_find){ //if tail is less than value than its not in the list since tail is the largest number in list
-                cout << to_find  << " is not in the list" << endl;
-                return false;
+                result = false;
             }
 
             else{ //search for it between mid and tail
-                Node *temp = mid;
+                temp = mid;
                 while(temp != nullptr){
                     if(temp->value == to_find){
-                        cout << to_find << " is in list" << endl;
-                        temp = NULL;
-                        delete temp;
-                        return true;
+                        result = true;
                     }
-
-                    else{
                         temp = temp->next;
-                    }
                 }
-
-                temp = NULL;
-                delete temp;
-                cout << to_find << " is not in the list" << endl;
-                return false;
             }
         }
 
         else if(mid->value > to_find){ //if mid is larger than searched for value than we look in first half of list
             if(head->value == to_find){
-                cout << to_find << " is in the list" << endl;
-                return true;
+                result = true;
             }
 
             else if(head->value > to_find){ //if head is > than searched for value its not in list as head is smallest value in list
-                cout << to_find << " is not in the list" << endl;
-                return false;
+                result = false;
             }
 
             else{ //search for it between head and mid
-                Node *temp = head;
+                temp = head;
                 int mid_location = list_length/2 + (list_length % 2);
                 for(int i = 0; i < mid_location; i++){
                     if(temp->value == to_find){
-                        temp = NULL;
-                        delete temp;
-                        cout << to_find << " is in list" << endl;
-                        return true;
+                        result = true;
                     }
 
                     else{
@@ -222,19 +206,16 @@ class linked_list{
                     }
                 }
 
-                temp = NULL;
-                delete temp;
-                cout << to_find << " is not in the list" << endl;
-                return false;
-
             }
         }
 
         else{ //if mid is == to the value being searched for
-            cout << to_find << " is in list" << endl;\
-            return true;
+            result = true;
         }
 
+        temp = NULL; //pointing to null now
+        delete temp; //deleting it
+        return result;
     }
 
 };
@@ -268,13 +249,27 @@ int main(){
 
     int_list->print_list();
 
+    int nums[6] = {10, 11, 6, 7, -1, 0};
+
+    for(int i = 0; i < 6; i++){
+        bool found = int_list->faster_search(nums[i]);
+
+        if(found == false){
+            cout << nums[i] << " was not found in the list" << endl;
+        }
+
+        else{
+            cout << nums[i] << " was found in the list" << endl;
+        }
+    }
+/*
     bool fast_10_found = int_list->faster_search(10);
     bool fast_11_found = int_list->faster_search(11);
     bool fast_6_found = int_list->faster_search(6);
     bool fast_7_found = int_list->faster_search(7);
     bool fast_neg1_found = int_list->faster_search(-1);
     bool fast_0_found = int_list->faster_search(0);
-
+*/
     int_list->get_mid();
 
     return 0;
