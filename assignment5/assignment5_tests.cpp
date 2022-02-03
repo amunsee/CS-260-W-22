@@ -44,7 +44,7 @@ int main(){
             cout << nums[i] << " was found in the list" << endl;
         }
     }
-/*
+/* turned this chunk into the above loop
     bool fast_10_found = int_list->faster_search(10);
     bool fast_11_found = int_list->faster_search(11);
     bool fast_6_found = int_list->faster_search(6);
