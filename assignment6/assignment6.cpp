@@ -104,7 +104,7 @@ class tree{
                 Node *temp = find_successor(current->left);
                 root->value = temp->value;
                 current->left = remove_value(temp->value, current->left); //find biggest value that is smaller than the value to delete so go left once then as far right as possible.
-        
+                delete temp;
             }
         }
 
