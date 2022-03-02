@@ -1,3 +1,5 @@
+(if time will come back and try to implement into code - but for now here is the design)
+
 Simple Hashtable design:
 Hash method – assign each letter a value a-z, a=0, z=25  (all letters will be made lowercase if they aren’t already to avoid issues with uppercase letters when hashing) example alex = 38 (0+4+11+23) and % by 10 resulting in 3.
 
