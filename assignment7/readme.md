@@ -9,6 +9,8 @@ Contains function: Take a word as input -> call the hash function to get the val
 Delete function: receive word as input -> get hash value for the given word -> go to correct array index word alex = 3 go to array[3] -> if the value at array[3] = the word given (alex) delete it if not make no changes to the array -> if no changes function prints out no changes made, if the word is deleted function prints {word} was deleted from the hashtable
 
 
+
+
 Smarter Hashtable design: (smarter in the fact it doesnt delete data to overwrite it, and holds more data)
 
 Will use chaining inside of the array to prevent collisions and handle more data. 
