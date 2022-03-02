@@ -8,8 +8,8 @@ Input function: Take word as input -> call hash function to get value associated
 Contains function: Take a word as input -> call the hash function to get the value for the word -> check the array at correct location -> for the word alex array[3] would be check to see if the value stored there is alex -> if the words match then function prints out word is in hashtable if the word at the array index is not the same then the function prints out hashtable does not contain the word {word}
 Delete function: receive word as input -> get hash value for the given word -> go to correct array index word alex = 3 go to array[3] -> if the value at array[3] = the word given (alex) delete it if not make no changes to the array -> if no changes function prints out no changes made, if the word is deleted function prints {word} was deleted from the hashtable
 
-
-\n\n
+.
+.
 
 Smarter Hashtable design: (smarter in the fact it doesnt delete data to overwrite it, and holds more data)
 
