@@ -40,14 +40,15 @@ shortest path function:
 
 min spanning tree function:
 ---------------------------
+graph:   
 
                   purple --3--yellow
                   /               \   
                 1                  9
                /                    \
-graph:     blue--2----brown----7---black 
-                \
-                  3
+            blue--2---brown----7---black 
+              \
+                3
                   \
                     green
                   
