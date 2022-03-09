@@ -29,7 +29,21 @@ add edge function:
 
 shortest path function:
 ------------------------
+graph:   
 
+                  purple --3--yellow
+                  /               \   
+                1                  9
+               /                    \
+            blue--2---brown----7---black 
+              \
+                3
+                  \
+                    green
+                    
+shortest_path(green, yellow);
+
+output: green->blue->purple->yellow (weight: 7)
 
 
 
@@ -68,3 +82,5 @@ output for mst function should be:
        3
         \
         green
+       
+ (probably wont look that nice though...maybe we will see)
