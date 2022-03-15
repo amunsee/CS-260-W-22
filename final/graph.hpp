@@ -3,14 +3,18 @@
 #include <iostream>
 #include <utility>
 #include <limits>
+#include <queue>
 
 using std::cin;
 using std::cout;
 using std::endl;
 using std::vector;
 using std::string;
+using std::pair;
 using std::make_pair;
 using std::numeric_limits;
+using std::priority_queue;
+using std::greater;
 
 class graph{
     private:
@@ -18,11 +22,7 @@ class graph{
     int num_nodes = 0;
 
     public:
-//thinking i might need a master list of nodes/edge connections in the graph for mst function to use... would have start/end nodes and weighting in it
-//would be vector with 3 vectors one for start, end, and weight???
-//add an int to keep track of number of nodes?
     graph(){ //constructor
-        //maybe dont need anything for constructor???
     }
     
     void add_node(string name){
@@ -31,7 +31,6 @@ class graph{
         this->num_nodes += 1;
     }
     
-    //add edge - need to figure out how i want to handle storing the edge weights
     void add_edge(string name1, string name2, int weight){ //iterate through all vertices to see if name1 and name2 are in there if so connect them
         int node1_pos = -1;
         int node2_pos = -1;
@@ -74,7 +73,7 @@ class graph{
         }
     }
 //////////////////////////////////////////////////////////////////////////////////////////////////////
-    //shortest path function
+    //shortest path function - using dijikstras algorithm
     void shortest_path(string start, string end){
         int inf = numeric_limits<int>::max(); //so i can set distance to nodes to infinity for start of dijikstras algorithm
         vector <graphnode *> unvisited;
@@ -110,9 +109,7 @@ class graph{
                 paths.push_back(make_pair(unvisited[i]->name, path));
             }
         }
-print_list(unvisited);//making sure has 3 to start
-cout << " made it" << endl;
-        //find node with smallest distance from start to be current node
+    
         while(unvisited.size() != 0){//keep algorithm going until all nodes are visited
         //find node with smallest distance from start -> set to current
         //visit all neighbors of current that are in unvisited list
@@ -133,15 +130,7 @@ cout << " made it" << endl;
 
             }
 
-            cout << "current node" << endl;
-            cout << current.first->name << endl;
-            cout << current.second << endl;
-            print_list(unvisited);
 
-            cout << endl;
- //break;            
-cout << "stil goin" << endl;
-//currently my loop below isnt working or a part in it isnt working
             //time to visit currents neighbors and update values - has to be a neighbor and in the unvisited list otherwise ignore it
             int current_path = node_path_index(dist[current_index].first->name, paths);
 
@@ -149,17 +138,11 @@ cout << "stil goin" << endl;
                 graphnode *current_neighbor = current.first->neighbors[k].first;  
                 bool visited_neighbor = check_visited(current_neighbor, visited);
                 if(visited_neighbor == false){ //if its true then we skip it and go to next neighbor
-                    //do my stuff
+                    
                     //find distance from this node to the neighbor and add to distance to this node -- if less than currant distance to the neighbor than update its distance
                     int distance = current.first->neighbors[k].second + current.second;
 
-                    cout << endl;
-                    cout << "neighbors distance from me" << endl;
-                    cout << current.first->neighbors[k].second << endl; //this is goood
-                    cout << "total distance to me" << endl; 
-                    cout << current.second << endl; //this is not
-                    cout << endl;
-
+             
                     for(int j = 0; j < dist.size(); j++){
                         if(dist[j].first == current.first->neighbors[k].first){
                             int neighbor_path = node_path_index(dist[j].first->name, paths); //get path to neighbor
@@ -169,25 +152,14 @@ cout << "stil goin" << endl;
                             }
                         }
                     }
-                  
-cout <<" almost done" << endl;
-                    ///finish this -- also in here might be where i deal with updating the path dictionary map thing.
                 }
-
             }
-            print_grid(dist);
-            cout << "beep boop" << endl; //making it out of the above loop...
         }
            
 
-//never getting out of while loop so this isnt executing
-        cout << "end standings " << endl;
-        print_grid(dist);
-
         cout << "The shortest path from: " << start << " to " << end << " is :" << dist[end_destination_index].second << endl;
         cout << "path to destination from start is: " << endl;
-        print_path(end, paths);
-        //print path from start to dest here.
+        print_path(end, paths);   //print path from start to dest here.
 
 
     }
@@ -223,10 +195,7 @@ cout <<" almost done" << endl;
                     next.second = nodes[i].second;
                 }                
             }
-
         }
-        cout << "next.first" << endl;
-        cout << next.first << endl;
         return next.first; //returning the index that contains the node with the current shortest distance from the start node
     }
 
@@ -250,7 +219,6 @@ cout <<" almost done" << endl;
                 return i;
             }
         }
-
     }
 
     vector <string> update_path(vector <string> parent, vector <string> next, string name){ //copy path taken to previous node and add self to it
@@ -271,11 +239,201 @@ cout <<" almost done" << endl;
                 return;
             }
         }
-
-
     }
-    //min spanniing tree algorith   
+
+////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+  //min spanniing tree algorith  -- need all nodes in graph, need all edges of each node in graph, # of nodes in graph.
+    void min_spanning_tree(){ //using kruskals algorithm
+        typedef pair <int, pair <string, string>> total_edges; //change name....
+        vector <pair <string, string>> mst_edges; //holds all the edges to form the mst
+        vector <vector<string>> edge_groups;
+        int num_nodes = this->nodes.size();
+
+        cout << "number of nodes is: " << this->nodes.size();
+
+        int mst_weight = 0;
+        int groups_counter = 0;
+
+        priority_queue <total_edges, vector<total_edges>, greater<total_edges>> pq; //will hold all edge weights/connected nodes in a min heap queue
+        //fill queue
+        for (int i = 0; i < num_nodes; i++){
+            for(int j = 0; j < this->nodes[i]->neighbors.size(); j++){
+                pq.push(make_pair(this->nodes[i]->neighbors[j].second, make_pair(this->nodes[i]->name, this->nodes[i]->neighbors[j].first->name)));
+            }
+        }
+    
+
+        //go through queue from smalleset weight to largest weight costing edges
+        while(pq.empty() == false || mst_edges.size() < num_nodes-1){ 
+            cout << "in business now" << endl;
+            pair <int, pair<string, string>> top = pq.top();
+            pair<int, int> to_add;
+            to_add = check_redundant(edge_groups, top.second);
+            vector <string> visited;
+
+//-2 means dont add its redundant, -1 has no group, anything else i an existing group
+            if(to_add.first != -2 && to_add.second != -2){//work on this once i get my other function sorted out, need to deal with creating new groups and joining groups, and adding the edges here.
 
 
+    cout << "time to work magic" << endl;
 
+                if(to_add.first == -1 && to_add.second == -1){
+                    //create new edge group
+                    vector <string> group;
+                    
+                    edge_groups.push_back(group);
+
+                    edge_groups[groups_counter].push_back(top.second.first); //add the data to the new group
+                    edge_groups[groups_counter].push_back(top.second.second);
+                    groups_counter += 1;
+
+                    cout << "groups time" << endl;
+                  
+                    cout << "counter" << groups_counter << endl;
+                    cout << " how we doin now" << endl;
+                }
+
+                else if(to_add.first == -1 || to_add.second == -1){
+                    cout << "case 2" << endl;
+                    if(to_add.first == -1){
+                        edge_groups[to_add.second].push_back(top.second.first);
+                        edge_groups[to_add.second].push_back(top.second.second);
+                    }
+
+                    else{
+                        edge_groups[to_add.first].push_back(top.second.first);
+                        edge_groups[to_add.first].push_back(top.second.second);
+                    }
+                }
+
+                else{
+                    cout << "case 3" << endl;
+                    edge_groups[to_add.first].push_back(top.second.first); //add new edge to group
+                    edge_groups[to_add.first].push_back(top.second.second);
+                    //copy second group to 1st
+                    for(int i = 0; i < edge_groups[to_add.second].size(); i++){
+                        edge_groups[to_add.first].push_back(edge_groups[to_add.second][i]);
+                    }
+
+                    //delete second group
+
+                    edge_groups.erase(edge_groups.begin() + to_add.second);
+
+                    //decrement group counter
+                    groups_counter -= 1;
+                    }
+
+
+                cout << "pickle" << endl;
+                
+                //add the edge here.
+                mst_edges.push_back(make_pair(top.second.first, top.second.second));//good
+                cout << "added " << top.second.first << " " << top.second.second << endl;
+                mst_print(mst_edges);
+                
+                mst_weight += top.first;//good
+                cout << "current weight: " << mst_weight << endl;
+            }
+
+            pq.pop();
+        }
+            cout << "Minimum Weight Spanning Tree connections:" << endl;
+            mst_print(mst_edges);
+            cout << "Minimum Spanning Tree Weight: " << mst_weight << endl;
+    }
+
+
+    pair <int, int> check_redundant(vector <vector<string>> edge_groups, pair <string, string> edge){
+        int string1_group = -1;
+        int string2_group = -1;
+        pair<int, int> group_pair;
+        group_pair.first = -1;
+        group_pair.second = -1;
+        bool same_group = false;
+
+        cout << "checking edge groups" << endl;
+
+        for(int i = 0; i < edge_groups.size(); i++){
+            for(int j = 0; j < edge_groups[i].size(); j++){
+                cout << edge_groups[i][j] << " i " << i  << endl;
+            }
+        }
+        cout << "done with that " << endl;
+
+        
+        cout << "am i redundant" << endl;
+        if(edge_groups.empty() == true){
+            group_pair.first = -1;//-1 means new group needed
+            group_pair.second = -1;
+            cout << "empty groups yikes" << endl;
+            cout << "pair: "<< group_pair.first << " " << group_pair.second << endl;
+            return group_pair;
+        }
+
+        //check for groups here
+
+
+        for(int i = 0; i < edge_groups.size(); i++){
+            
+            for(int j = 0; j < edge_groups[i].size(); j++){
+                cout << "word at: " << edge_groups[i][j] << endl;
+                cout << " word looking for " << edge.first << endl;
+                if(edge_groups[i][j] == edge.first){
+                    cout << "cheese" << endl;
+                    cout << i << endl;
+                    string1_group = i;
+                    cout << "string 1 " << i << endl;
+                    break;
+                }
+            }
+        }   
+
+
+        for(int i = 0; i < edge_groups.size(); i++){
+            cout << "group i " << i << endl;
+            
+            for(int j = 0; j < edge_groups[i].size(); j++){
+                if(edge_groups[i][j] == edge.second){
+                    cout << "peek" << endl;
+                    string2_group = i;
+                    cout << "string 2 should be " << i << endl;
+                    break;
+                    }
+                }   
+            }
+
+        if(string1_group == string2_group){ //try else if here if this doesnt work
+            //edge_groups not empty and they are same group
+            if(string1_group == -1 && string2_group == -1){
+                return make_pair(-1, -1);
+            }
+            cout << "popping into 3" << endl;
+            cout << " same group " << endl;
+            cout << "same group -2 " << endl;
+            return make_pair(-2, -2);
+        }
+
+        else if(string1_group != string2_group){//at least one has a group or both have a different group
+            cout << "popped in 2" << endl;
+            return make_pair(string1_group, string2_group);
+        }
+
+        
+        
+    }  
+    bool check_contains(vector <string> group, string search_for){
+        for(int i = 0; i < group.size(); i++){
+            if(group[i] == search_for){
+                return true;
+            }
+        }
+        return false;
+    }
+
+    void mst_print(vector <pair <string, string>> mst){
+        for(int i = 0; i < mst.size(); i++){
+            cout << mst[i].first << "->" << mst[i].second << endl;
+        }
+    }
+/////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 };
