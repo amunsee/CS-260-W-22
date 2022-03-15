@@ -1,6 +1,6 @@
 Design: To create a graph data structure that has the ability to add new vertexs/nodes as well as adding new edges between them, it also needs to have a function that will figure out the shortest path between two nodes and a minimum spanning tree algorithm function.
 
-for my graph i used adjacency lists to store all data.
+for my graph i used adjacency lists to store all data. after completeing the assignment, and analyzing the runtimes it seems like using an adjacency matrix for storing the data would have been the better choice as we arent adding/removing tons of nodes for this project, the only advantage of the adjacency list is the ability to add to it as O(1) but all other operations are at best O(n) or slower. Possibly using a combination of the two could have some ability to be superior to just using one or the other?
 
 I used Dijikstras algorithm for the shorest path function, and kruskals algorithm for the minimum spanning tree function.
 
