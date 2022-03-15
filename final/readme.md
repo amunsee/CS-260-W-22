@@ -1,5 +1,7 @@
 Design: To create a graph data structure that has the ability to add new vertexs/nodes as well as adding new edges between them, it also needs to have a function that will figure out the shortest path between two nodes and a minimum spanning tree algorithm function.
 
+for my graph i used adjacency lists to store all data.
+
 I used Dijikstras algorithm for the shorest path function, and kruskals algorithm for the minimum spanning tree function.
 
 
