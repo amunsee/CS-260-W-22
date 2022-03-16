@@ -4,6 +4,8 @@ for my graph i used adjacency lists to store all data. after completeing the ass
 
 I used Dijikstras algorithm for the shorest path function, and kruskals algorithm for the minimum spanning tree function.
 
+Psuedo code tests in tests file of repo, main.cpp will create graph, add nodes and edges then print out each node and neighbors to verify added, then find shorest path between two nodes in graph and mst.
+
 
 
 
